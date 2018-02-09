@@ -4,13 +4,17 @@ package com.burger;
 
 
 
+
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class MainBurger implements HamBurgerMethods {
-     ArrayList<BaseBurger> al;
+    static ArrayList<BaseBurger> al=new ArrayList<BaseBurger>();
+     ArrayList<BaseBurger> order=new ArrayList<BaseBurger>();
+
     public MainBurger() {
 
     }
@@ -46,7 +50,7 @@ public class MainBurger implements HamBurgerMethods {
         db1.setAdditionals_price(f);
         db1.setName_of_the_burger("DeluxBurger");
         DeluxBurger db2=new DeluxBurger("B",50);
-        al=new ArrayList<BaseBurger>();
+        //al=new ArrayList<BaseBurger>();
         al.add(b1);
         al.add(b2);
         al.add(b3);
@@ -108,10 +112,88 @@ else if(burger.getClass().getName().equals("com.burger.HealthyBurger")) {
     }
 }
         }
+
     }
+
+
     public void createOrder() {
+        int order_id=100;
+
         System.out.println("you have entered into createOrder() method. ");
+        System.out.println("choose your order from menu. ");
+        //System.out.println("select Burger Name,Burger roll type and additionals ");
+        String burger_name = null;
+        String burger_roll_type = null;
+        String[] additionals1 = null;
+        double[] price1 = null;
+        double burger_price = 0.0;
+        double additionals_price = 0.0;
+        String[] additionals2 = null;
+        double[] price2 = null;
+        String[] additionals3 = null;
+        double[] price3 = null;
+        BaseBurger burger = null;
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("Enter Burger Name. ");
+            burger_name = br.readLine();
+            System.out.println("Enter Burger roll type. ");
+            burger_roll_type = br.readLine();
+            System.out.println("Enter additionals. ");
+            additionals1 = new String[8];
+            price1 = new double[8];
+
+            additionals2 = new String[8];
+            price2 = new double[8];
+            additionals3 = new String[8];
+            price3 = new double[8];
+            additionals1[0] = br.readLine();
+            //al=new ArrayList<BaseBurger>();
+            Iterator iterator = al.iterator();
+
+            while (iterator.hasNext()) {
+
+                BaseBurger b = (BaseBurger) iterator.next();
+
+                if (b.getName_of_the_burger().equals(burger_name)) {
+
+                    if (b.getBread_roll_type().equals(burger_roll_type)) {
+
+                        price1 = b.getAdditionals_price();
+                        burger_price = b.getBurger_price();
+                       // System.out.println("entered " + burger_price);
+
+                    }
+                }
+            }
+            if (burger_name.equals("BaseBurger")) {
+                burger = new BaseBurger(burger_roll_type, burger_price);
+                burger.setAdditionals(additionals1);
+                burger.setAdditionals_price(price1);
+            } else if (burger_name.equals("HealthyBurger")) {
+                burger = new HealthyBurger(burger_roll_type, burger_price);
+                burger.setAdditionals(additionals1);
+                burger.setAdditionals_price(price1);
+            } else if (burger_name.equals("DeluxBurger")) {
+                burger = new DeluxBurger(burger_roll_type, burger_price);
+                burger.setAdditionals(additionals1);
+                burger.setAdditionals_price(price1);
+            }
+
+            order.add(burger);
+            System.out.println("size is: "+order.size());
+        } catch (java.io.IOException ioe) {
+            ioe.printStackTrace();
+        } catch (java.lang.NullPointerException ne) {
+            System.out.println("entered into catch block. ");
+            ne.printStackTrace();
+        }
+        order_id++;
+        System.out.println("order id is: "+order_id);
+
     }
+
+
     public void viewOrder() {
         System.out.println("you have entered into viewOrder() method. ");
     }
@@ -125,39 +207,43 @@ else if(burger.getClass().getName().equals("com.burger.HealthyBurger")) {
 
     public static void main(String... a) {
         System.out.println("you have entered into main() method. ");
-        System.out.println("1)showMenu\n2)createOrder\n3)viewOrder\n4)display\n5)updateOrder\n6)exit");
-        System.out.println("select your choice.");
-        int choice=0;
-        MainBurger m=null;
-        try {
-           BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-           choice=Integer.parseInt(br.readLine());
-           if(choice==1) {
-               m=new MainBurger();
-               m.showMenu();
-           }
-           else if(choice==2) {
-               System.out.println("this is createOrder");
-           }
-           else if(choice==3) {
-               System.out.println("this is viewOrder");
-           }
-           else if(choice==4) {
-               System.out.println("this is display");
-           }
-           else if(choice==5) {
-               System.out.println("this is updateOrder");
-           }
-           else if(choice==6) {
-                return;
-           }
-       }catch(java.io.IOException ioe) {
+        int order_id=101;
 
-            
+        String choice = null;
+        MainBurger m = null;
+        m = new MainBurger();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        while (true) {
+            System.out.println("1)showMenu\n2)createOrder\n3)viewOrder\n4)display\n5)updateOrder\n6)exit");
+            System.out.println("select your choice.");
+            try {
 
+                choice = br.readLine();
+                if (choice.equals("1")) {
 
-           ioe.printStackTrace();
-       }
+                    m.showMenu();
+                } else if (choice.equals("2")) {
+                    System.out.println("this is createOrder");
+                    m.createOrder();
+                } else if (choice.equals("3")) {
+                    System.out.println("this is viewOrder");
+                } else if (choice.equals("4")) {
+                    System.out.println("this is display");
+                } else if (choice.equals("5")) {
+                    System.out.println("this is updateOrder");
+                } else if (choice.equals("6")) {
+                    return;
+                } else if (choice.equals("")) {
+                    System.out.println("enter valid number");
+                }
+
+            } catch (java.io.IOException ioe) {
+                ioe.printStackTrace();
+            } catch (java.lang.Exception e) {
+                System.out.println("entered in main() exception block ");
+                e.printStackTrace();
+            }
+        }
 
     }
 
