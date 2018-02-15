@@ -204,6 +204,8 @@ else if(burger.getClass().getName().equals("com.burger.HealthyBurger")) {
                     }
                 }
             }
+
+
             if (burger_name.equals("BaseBurger")) {
                 burger = new BaseBurger(burger_roll_type, burger_price);
 
@@ -218,10 +220,23 @@ else if(burger.getClass().getName().equals("com.burger.HealthyBurger")) {
                     price1[0] = 8.0;
                 burger.setAdditionals(additionals1);
                 burger.setAdditionals_price(price1);
+
             }
 
             else if (burger_name.equals("HealthyBurger")) {
                 burger = new HealthyBurger(burger_roll_type, burger_price);
+                if(additionals1[0].equals("lattuce"))
+                 price1[0]=2.0;
+                else if(additionals1[0].equals("tamatos"))
+                    price1[0]=4.0;
+                else if(additionals1[0].equals("carrot"))
+                    price1[0]=6.0;
+                           else if(additionals1[0].equals("D"))
+                               price1[0]=8.0;
+                else if(additionals1[0].equals("E"))
+                    price1[0]=10.0;
+                else if(additionals1[0].equals("F"))
+                    price1[0]=12.0;
                 burger.setAdditionals(additionals1);
                 burger.setAdditionals_price(price1);
             }
@@ -236,9 +251,11 @@ else if(burger.getClass().getName().equals("com.burger.HealthyBurger")) {
                     price1[0] = 12.0;
                 burger.setAdditionals(additionals1);
                 burger.setAdditionals_price(price1);
+
             }
 
-            order.add(burger);
+            this.order.add(burger);
+
             System.out.println("size is: " + order.size());
 
         } catch (java.io.IOException ioe) {
@@ -249,7 +266,7 @@ else if(burger.getClass().getName().equals("com.burger.HealthyBurger")) {
         }
         order_id++;
         System.out.println("order id is: "+order_id);
-        System.out.println(" hashCode of order ArrayList: "+order.hashCode());
+        System.out.println(" hashCode of order ArrayList: "+this.order.hashCode());
 
     }
 
@@ -299,6 +316,24 @@ else if(burger.getClass().getName().equals("com.burger.HealthyBurger")) {
 
     public void display() {
         System.out.println("you have entered into display() method.  ");
+        String[] additionals=null;
+        double[] additionals_price=null;
+        Iterator iterator=order.iterator();
+        double item_cost=0.0;
+        double items_cost=0.0;
+        System.out.println("Burger_Name    Bread_roll_type   Burger_Price   Additionals   Additionals_Price   cost of an item");
+        while(iterator.hasNext()) {
+            BaseBurger burger=(BaseBurger)iterator.next();
+            additionals=new String[8];
+            additionals_price=new double[8];
+            additionals=burger.getAdditionals();
+            additionals_price=burger.getAdditionals_price();
+
+            item_cost=burger.getBurger_price()+additionals_price[0];
+            items_cost=items_cost+item_cost;
+            System.out.println(burger.getName_of_the_burger()+"          "+burger.getBread_roll_type()+"               "+burger.getBurger_price()+"              "+additionals[0]+"              "+additionals_price[0]+"                "+item_cost);
+        }
+        System.out.println("\n\n\nTotal Items Cost: "+items_cost);
     }
 
     // code of updateOrder() method.
@@ -596,6 +631,7 @@ else if(burger.getClass().getName().equals("com.burger.HealthyBurger")) {
                     m.viewOrder();
                 } else if (choice.equals("4")) {
                     System.out.println("this is display");
+                    m.display();
                 } else if (choice.equals("5")) {
                     System.out.println("this is updateOrder");
                     m.updateOrder();
